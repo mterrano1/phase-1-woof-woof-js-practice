@@ -53,11 +53,11 @@ function renderOneDog(dog){
     })
 }
 
-// function test(){
-//     if (btn.innerText === 'Good Dog!'){
-//         btn.innerText = 'Bad Dog!'
-//     }
-// }
+function test(){
+    if (btn.innerText === 'Good Dog!'){
+        btn.innerText = 'Bad Dog!'
+    }
+}
 
 // grabBtn.addEventListener('click', ()=>{
 //     console.log('button was clicked')

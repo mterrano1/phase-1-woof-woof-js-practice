@@ -6,17 +6,10 @@ function init(){
 }
 
 //Global Scope Functions and Variables
-const img = document.createElement('img');
-const h2 = document.createElement('h2');
-const btn = document.createElement('button');
 
-function isGoodDog(dog){
-    if (dog.isGoodDog){
-        btn.innerText = 'Good Dog!'
-    }
-    else
-    {
-        btn.innerText = 'Bad Dog!'
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
     }
 }
 
@@ -26,47 +19,81 @@ function isGoodDog(dog){
 //         headers:{
 //             'Content-Type': 'application/json'
 //         },
-//         body: JSON.stringify(dog)
+//         body: JSON.stringify(isGoodDog = 'false')
 //     })
 //     .then(res => res.json())
 //     .then(dog => console.log(dog))
 // }
 
+// const patchDog = {
+//     method: 'PATCH',
+//     headers: {
+//         'Content-Type': 'application/json',
+//         Accept: 'application/json',
+//     },
+//     body: JSON.stringify(isGoodDog = 'false')
+// }
+
 //RenderDog Function
+
 function renderOneDog(dog){
+
     const grabDogInfo = document.querySelector('#dog-info');
     const grabDogBar = document.querySelector('#dog-bar');
     const createSpan = document.createElement('span');
+
     grabDogBar.appendChild(createSpan);
     createSpan.innerText = dog.name;
+
     createSpan.addEventListener('click', ()=>{
+        const grabDogId = document.querySelector('#dog-info');
+        const img = document.createElement('img');
+        const h2 = document.createElement('h2');
+        const btn = document.createElement('button');
+        const id = dog.id;
+
+        if (grabDogId.hasChildNodes){
+            removeAllChildNodes(grabDogId)
+        }
+
+        function isGoodDog(dog){
+            if (dog.isGoodDog){
+                btn.innerText = 'Good Dog!'
+            }
+            else
+            {
+                btn.innerText = 'Bad Dog!'
+            }
+        };
+
         grabDogInfo.appendChild(img);
         img.src = dog.image;
         grabDogInfo.appendChild(h2);
         h2.innerText = dog.name;
         grabDogInfo.appendChild(btn);
         btn.id = dog.id;
-        btn.className = 'dog-button'
-        let grabBtn = document.querySelector('dog-button')
+        btn.addEventListener('click', ()=>{
+            if (btn.innerText === 'Good Dog!'){
+                fetch(`http://localhost:3000/pups/${dog.id}`,{
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify(isGoodDog = 'false')
+            })
+                .then(res => res.json())
+                .then(dog => console.log(dog))
+                btn.innerText = 'Bad Dog!'
+            }
+            else {
+                btn.innerText = 'Good Dog!'
+            }
+        })
+
         isGoodDog(dog);
-        // test();
     })
 }
 
-function test(){
-    if (btn.innerText === 'Good Dog!'){
-        btn.innerText = 'Bad Dog!'
-    }
-}
-
-// grabBtn.addEventListener('click', ()=>{
-//     console.log('button was clicked')
-// })
-
-// function clickBtn(){
-//     grabBtn.addEventListener('click', ()=>{
-//         console.log('button was clicked')
-//     })
-// }
 
 document.addEventListener('DOMContentLoaded', init)

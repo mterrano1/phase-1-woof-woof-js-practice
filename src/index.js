@@ -56,7 +56,7 @@ function renderOneDog(dog){
             removeAllChildNodes(grabDogId)
         }
 
-        function isGoodDog(dog){
+        function goodDog(dog){
             if (dog.isGoodDog){
                 btn.innerText = 'Good Dog!'
             }
@@ -80,18 +80,29 @@ function renderOneDog(dog){
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
                 },
-                body: JSON.stringify(isGoodDog = 'false')
+                body: JSON.stringify({isGoodDog: false}),
             })
                 .then(res => res.json())
                 .then(dog => console.log(dog))
                 btn.innerText = 'Bad Dog!'
             }
             else {
+                fetch(`http://localhost:3000/pups/${dog.id}`,{
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({isGoodDog: true}),
+            })
+                .then(res => res.json())
+                .then(dog => console.log(dog))
+                btn.innerText = 'Bad Dog!'
                 btn.innerText = 'Good Dog!'
             }
         })
 
-        isGoodDog(dog);
+        goodDog(dog);
     })
 }
 
